@@ -9,4 +9,3 @@ addTodoBtn.addEventListener("click", () => {
     console.log(todoText)
     inputTag.value = ""
 });
-})
