@@ -1,19 +1,31 @@
 const addTodoBtn = document.getElementById("addTodoBtn")
 const inputTag = document.getElementById("todoInput")
+const todoListUl = document.getElementById("todoList")
 let todoText; // This should be populated when the user clicks on Add button
 
 let todos = [];
 let todosString = localStorage.getItem("todos")
 // If we have todos in the localStorage, we will read it
-if(todosString) {
+if (todosString) {
     todos = JSON.parse(todosString)
 }
 
+const populateTodos = () => {
+    let string = "";
+
+    todoListUl.innerHTML = todoListUl.innerHTML + string
+       
+}
+for (const todo of todos) {
+    string += `<li class="todo-item ${todo.isCompleted ? "checked": "completed"}">
+                    <input type="checkbox" class="todo-checkbox" ${todo.isCompleted ? "checked" : ""} >
+                    <span class="todo-text">${todo.title}</span>
+                    <button class="delete-btn">×</button>
+                </li>`
+}
 
 addTodoBtn.addEventListener("click", () => {
-    console.log("Hey I just clicked")
-    todoText = inputTag.value 
-    console.log(todoText)
+    todoText = inputTag.value
     inputTag.value = ""
     let todo = {
         title: todoText,
@@ -22,3 +34,5 @@ addTodoBtn.addEventListener("click", () => {
     todos.push(todo)
     localStorage.setItem("todos", JSON.stringify(todos))
 });
+
+populateTodos()
