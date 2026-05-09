@@ -14,14 +14,31 @@ if (todosString) {
 
 const populateTodos = () => {
     let string = "";
+    let i = 0
     for (const todo of todos) {
-        string += `<li id="todo-${todo.id}" class="todo-item ${todo.isCompleted ? "completed" : ""}">
+        string += `<li id="todo-${i}" class="todo-item ${todo.isCompleted ? "completed" : ""}">
                     <input type="checkbox" class="todo-checkbox" ${todo.isCompleted ? "checked" : ""}>
                     <span class="todo-text">${todo.title}</span>
                     <button class="delete-btn">×</button>
                 </li>`
-    }
+    }            i++;
     todoListUl.innerHTML = string 
+
+
+
+    // Add the checkbox 
+    let deleteBtns = document.querySelectorAll(".delete-btn")
+
+deleteBtns.forEach((element) => {
+    element.addEventListener("click", (e) => {
+       console.log(e.target.parentNode.id)
+       todos = todos.filter((todo) => {
+        return ("todo-" + todo.id ) !== (e.target.parentNode.id)
+       })
+       localStorage.setItem("todos", JSON.stringify(todos))
+       populateTodos()
+    })
+})
     
 }
 
@@ -35,6 +52,9 @@ addTodoBtn.addEventListener("click", () => {
         isCompleted: false
     }
     todos.push(todo)
+    todos = todos.map((todo, i) => {
+        return {...todo, id: i}
+    })
     localStorage.setItem("todos", JSON.stringify(todos))
     populateTodos()
 })
@@ -50,7 +70,7 @@ todoCheckboxes.forEach((element)=> {
             // Grab the todo from todos array and update the todos array to set this todo's isCompleted as true
             todos = todos.map(todo => {
                 if(todo.id == element.parentNode.id) {
-                    return {...todo, isCompleted: true}
+                    return {...todo, isCompleted: false}
                 }
                 else {
                     return todo
@@ -63,4 +83,4 @@ todoCheckboxes.forEach((element)=> {
         }
     })
 })
- 
+
